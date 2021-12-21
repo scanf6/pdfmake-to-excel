@@ -61,28 +61,42 @@ function afterMerge(
 }
 
 /**
- * Fonction de contruction du fichier a partir des operation de base
- * @param {ExcelJS.Workbook} workbook Le classeur vide
- * @param {any} data Les donnees a manipuler pour construire le fichier Excel
- * @param {Object} worksheetOptions Worksheet Global Options
- * @returns {ExcelJS.Workbook} La fonction retourne le classeur contenant les lignes et colonnes apres construction
+ * Function to build the Excel file
+ * @param {Workbook} workbook Empty workbook
+ * @param {SheetDefaultOptions} worksheetOptions Worksheet Global Default Options
+ * @returns {Workbook} A Workbook containing the provided data
  */
-export default (workbook:Workbook, sheetData:IPayload, worksheetOptions:SheetDefaultOptions) => {
-
-    /* META DONNEES DU CLASSEUR */
+export default async (workbook:Workbook, sheetData:IPayload, sheetProtectionPassword:string|undefined|null, worksheetOptions:SheetDefaultOptions) => {
+    /* METADATA */
     workbook.creator = ''; //
     workbook.lastModifiedBy = '';
     workbook.created = new Date();
     workbook.modified = new Date();
     workbook.lastPrinted = new Date();
 
-    /* CONSTRUCTION DU CONTENU DU CLASSEUR */
-    const worksheet = workbook.addWorksheet('My New Sheet', { properties: worksheetOptions}); // Ajout d'une feuille au classeur
+    /* BUILDING PROCESS */
+    let startingLine = 0;
+    const worksheet = workbook.addWorksheet('Feuille Excel', { properties: worksheetOptions});
 
-    // ============= LARGE TABLE ====================//
+    if(sheetProtectionPassword) await worksheet.protect(sheetProtectionPassword, {});
+
     const {title, campaign, situation, logo, data} = sheetData;
 
-    for(let i=0; i < data.length; i++) {
+    if(logo) {
+        startingLine = 8;
+
+        const image = workbook.addImage({
+            base64: logo,
+            extension: 'png',
+        });
+
+        worksheet.addImage(image, 'A1:D3');
+    }
+
+    if(campaign) worksheet.getCell('A5').value = campaign;
+    if(situation) worksheet.getCell('A6').value = situation;
+
+    for(let i=startingLine; i < data.length; i++) {
         const line = data[i];
 
         for(let j=0; j < line.length; j++) {
