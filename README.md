@@ -52,3 +52,15 @@ Here is how you should format your content definition object
         ]
     ]
 }
+```
+## Sheet Protection
+If you want to set a password to protect your sheet against modification, pass the protection password as the third argument to the ExcelConverter constructor
+```javascript
+import {ExcelConverter} from 'pdfmake-to-excel';
+
+function downloadFile() {
+    const exporter = new ExcelConverter('Export test', contentDefinition, 'protectionP@ssw0rd');
+    exporter.downloadExcel();
+}
+```
+
