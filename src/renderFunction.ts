@@ -1,6 +1,7 @@
 import { Workbook } from 'exceljs';
 import { IPayload, ICell } from './interfaces/IPayload.interface';
 import { SheetDefaultOptions } from './types/sheetOptions.type';
+import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 
 /**
  * Function that take a number and returns the according character
@@ -66,7 +67,7 @@ function afterMerge(
  * @param {SheetDefaultOptions} worksheetOptions Worksheet Global Default Options
  * @returns {Workbook} A Workbook containing the provided data
  */
-export default async (workbook:Workbook, sheetData:IPayload, sheetProtectionPassword:string|undefined|null, worksheetOptions:SheetDefaultOptions) => {
+export default async (workbook:Workbook, sheetData:IPayload, options:IDefaultOptions) => {
     /* METADATA */
     workbook.creator = ''; //
     workbook.lastModifiedBy = '';
@@ -76,10 +77,11 @@ export default async (workbook:Workbook, sheetData:IPayload, sheetProtectionPass
 
     /* BUILDING PROCESS */
     let startingLine = 0;
-    let titlePositionning = excelColumns(Math.round((sheetData.data[0].length) / 2))
-    const worksheet = workbook.addWorksheet('Feuille Excel', { properties: worksheetOptions});
+    let titlePositionning = excelColumns(Math.round((sheetData.data[0].length) / 2));
+    const {defaultOptions, protection} = options;
+    const worksheet = workbook.addWorksheet('Feuille Excel', { properties: defaultOptions});
 
-    if(sheetProtectionPassword) await worksheet.protect(sheetProtectionPassword, {});
+    if(protection) await worksheet.protect(protection, {});
 
     const {title, campaign, situation, logo, data} = sheetData;
 

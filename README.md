@@ -14,11 +14,27 @@ Install pdfmake-to-excel with npm
 
 ## Usage/Examples
 Import the ExcelConverter class from pdfmake-to-excel, instanciate it with the name of your excel file and your content definition object, then call the downloadExcel() method.
+
+Pass the following arguments to the constructor
+
+- The Excel filename
+- The PDFMake content definition object
+- A configuration object including
+    * A sheet protection password [OPTIONAL]
+    * A default Options Excel configuration [OPTIONAL]
 ```javascript
 import {ExcelConverter} from 'pdfmake-to-excel';
 
 function downloadFile() {
-    const exporter = new ExcelConverter('Export test', contentDefinition);
+    const exporter = new ExcelConverter(
+        'Export test',
+        contentDefinition,
+        {
+            protection?: 'p@ssw0rd',
+            defaultOptions?: {defaultColWidth: 20}
+
+        }
+    );
     exporter.downloadExcel();
 }
 ```
@@ -53,14 +69,3 @@ Here is how you should format your content definition object
     ]
 }
 ```
-## Sheet Protection
-If you want to set a password to protect your sheet against modification, pass the protection password as the third argument to the ExcelConverter constructor
-```javascript
-import {ExcelConverter} from 'pdfmake-to-excel';
-
-function downloadFile() {
-    const exporter = new ExcelConverter('Export test', contentDefinition, 'protectionP@ssw0rd');
-    exporter.downloadExcel();
-}
-```
-
