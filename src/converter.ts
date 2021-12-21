@@ -9,7 +9,7 @@ export class ExcelConverter {
 	constructor(
 		private filename:String,
 		private payload:IPayload,
-		private sheetProtectionPassword:string | undefined | null,
+		private sheetProtectionPassword:string | undefined | null = null,
 		private sheetDefaultOptions:SheetDefaultOptions = { defaultColWidth: 20}
 	) {}
 
