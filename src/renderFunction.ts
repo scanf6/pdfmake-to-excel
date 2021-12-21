@@ -1,6 +1,5 @@
 import { Workbook } from 'exceljs';
 import { IPayload, ICell } from './interfaces/IPayload.interface';
-import { SheetDefaultOptions } from './types/sheetOptions.type';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 
 /**
@@ -78,7 +77,8 @@ export default async (workbook:Workbook, sheetData:IPayload, options:IDefaultOpt
     /* BUILDING PROCESS */
     let startingLine = 0;
     let titlePositionning = excelColumns(Math.round((sheetData.data[0].length) / 2));
-    const {defaultOptions, protection} = options;
+    const {protection, defaultOptions = {defaultColWidth: 20}} = options;
+
     const worksheet = workbook.addWorksheet('Feuille Excel', { properties: defaultOptions});
 
     if(protection) await worksheet.protect(protection, {});
@@ -87,12 +87,7 @@ export default async (workbook:Workbook, sheetData:IPayload, options:IDefaultOpt
 
     if(logo) {
         startingLine = 8;
-
-        const image = workbook.addImage({
-            base64: logo,
-            extension: 'png',
-        });
-
+        const image = workbook.addImage({ base64: logo, extension: 'png' });
         worksheet.addImage(image, 'A1:B3');
     }
 

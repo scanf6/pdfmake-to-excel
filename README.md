@@ -32,7 +32,6 @@ function downloadFile() {
         {
             protection?: 'p@ssw0rd',
             defaultOptions?: {defaultColWidth: 20}
-
         }
     );
     exporter.downloadExcel();

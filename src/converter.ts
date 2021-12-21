@@ -10,7 +10,7 @@ export class ExcelConverter {
 		private filename:String,
 		private payload:IPayload,
 		private options:IDefaultOptions = {
-			protection: null,
+			protection: undefined,
 			defaultOptions: {defaultColWidth: 20}
 		},
 
@@ -19,6 +19,7 @@ export class ExcelConverter {
 	async downloadExcel() {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
+
 
 		renderer.xlsx.writeBuffer().then((data:Buffer) => {
 			var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
