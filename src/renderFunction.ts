@@ -76,6 +76,7 @@ export default async (workbook:Workbook, sheetData:IPayload, sheetProtectionPass
 
     /* BUILDING PROCESS */
     let startingLine = 0;
+    let titlePositionning = excelColumns(Math.round((sheetData.data[0].length) / 2))
     const worksheet = workbook.addWorksheet('Feuille Excel', { properties: worksheetOptions});
 
     if(sheetProtectionPassword) await worksheet.protect(sheetProtectionPassword, {});
@@ -90,11 +91,12 @@ export default async (workbook:Workbook, sheetData:IPayload, sheetProtectionPass
             extension: 'png',
         });
 
-        worksheet.addImage(image, 'A1:D3');
+        worksheet.addImage(image, 'A1:B3');
     }
 
     if(campaign) worksheet.getCell('A5').value = campaign;
     if(situation) worksheet.getCell('A6').value = situation;
+    if(title) worksheet.getCell(`${titlePositionning}7`).value = title;
 
     for(let i=startingLine; i < data.length; i++) {
         const line = data[i];
