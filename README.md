@@ -1,7 +1,7 @@
 
 # PDFMake to Excel
 
-pdfmake-to-excel is a package that helps build an Excel file from a content definition object from the pdfmake library.
+pdfmake-to-excel is a package that helps build an Excel file from a content definition table object from the pdfmake library.
 
 
 ## Installation
@@ -13,12 +13,12 @@ Install pdfmake-to-excel with npm
 ```
 
 ## Usage/Examples
-Import the ExcelConverter class from pdfmake-to-excel, instanciate it with the name of your excel file and your content definition object, then call the downloadExcel() method.
+Import the ExcelConverter class from pdfmake-to-excel, instanciate it with the name of your excel file and your pdfmake table content definition object, then call the downloadExcel() method.
 
 Pass the following arguments to the constructor
 
 - The Excel filename
-- The PDFMake content definition object
+- The PDFMake table content definition object
 - A configuration object including
     * A sheet protection password [OPTIONAL]
     * A default Options Excel configuration [OPTIONAL]
@@ -40,7 +40,7 @@ function downloadFile() {
 
 
 ## Content Definition Object Format
-Here is how you should format your content definition object
+Here is how you should format your table content definition object
 
 ```javascript
 {
