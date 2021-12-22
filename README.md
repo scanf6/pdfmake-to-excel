@@ -1,7 +1,7 @@
 
-# PDFMake to Excel
+# PDFMake Table to Excel
 
-pdfmake-to-excel is a package that helps build an Excel file from a content definition table object from the pdfmake library.
+pdfmake-to-excel is a package that helps build an Excel file from a table content definition object from the pdfmake library.
 
 
 ## Installation
