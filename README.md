@@ -68,3 +68,18 @@ Here is how you should format your table content definition object
     ]
 }
 ```
+
+## Multiple Sheets
+To generate an Excel file with multiple sheets and a table on each sheet, all you have to do is to provide the ExcelConverter Class with a content definition object where the data attribute is an array of sheets, each sheets being an object with the name (sheetName property) and the table content definition (sheetData property)
+```
+const exporter = new ExcelConverter(
+  'File_name',
+  {
+    data: [
+      { sheetName: 'Sheet_name 01', sheetData: contentDefinition1 },
+      { sheetName: 'Sheet_name 02', sheetData: contentDefinition2 },
+      { sheetName: 'Sheet_name 03', sheetData: contentDefinition3 },
+    ]
+  }
+);
+```
