@@ -3,7 +3,7 @@ export interface IPayload {
 	campaign?: string;
 	situation?: string;
 	logo?: string;
-	data: ICell[][]
+	data: ICell[][] | ISheetData[]
 }
 
 export interface ICell {
@@ -11,4 +11,9 @@ export interface ICell {
 	rowSpan?:number | null | undefined;
 	colSpan?:number | null | undefined;
 	border?: number[]
+}
+
+export interface ISheetData {
+	sheetName:string;
+	sheetData: ICell[][]
 }
