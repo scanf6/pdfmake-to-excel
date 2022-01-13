@@ -22,7 +22,7 @@ export class ExcelConverter {
 
 
 		renderer.xlsx.writeBuffer().then((data:Buffer) => {
-			var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 			saveAs(blob, this.filename + '.xlsx');
 		});
 	}
