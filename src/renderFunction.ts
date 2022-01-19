@@ -60,15 +60,56 @@ function afterMerge(
     return `${stringPart}${numberPart};`
 }
 
-function isICell(object: any): object is ICell {
+function numFmDecimal(numberValue:number):string {
+    let formatStr = "0.";
+    let num = numberValue.toString().split('.')[1].length;
+    for(let i=0; i < num; i++) {
+        formatStr += "0";
+    }
+    return formatStr;
+}
+
+/**
+ * This function will format the cell value into the correct type before rendering it to the Excel sheet
+ * @param {ICell} cellValue
+ * @returns The formated cell value according to the type
+ */
+function renderCell(cell:ICell) {
+    let numTypes = [
+        'float8',
+        'float4',
+        'numeric',
+        'int4',
+        'int8',
+        'int'
+    ];
+
+    let stringTypes = ['varchar'];
+
+    if(!isNaN(Number(cell.text))) return parseFloat(cell.text);
+    if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join(""));
+    if(stringTypes.includes(cell.type)) return cell.text;
+    else return  cell.text;
+}
+
+function isICell(object:any): object is ICell {
     return 'text' in object;
 }
 
-function isISheetData(object: any): object is ISheetData {
+function isISheetData(object:any): object is ISheetData {
     return 'sheetName' in object;
 }
 
-async function sheetBuilding(workbook:Workbook, title:string | undefined, campaign:string | undefined, situation:string | undefined, logo:string | undefined, data:ICell[][], options:IDefaultOptions, sheetName:string) {
+async function sheetBuilding(
+    workbook:Workbook,
+    title:string | undefined,
+    campaign:string | undefined,
+    situation:string | undefined,
+    logo:string | undefined,
+    data:ICell[][],
+    options:IDefaultOptions,
+    sheetName:string = 'Sheet 01'
+) {
     /* BUILDING PROCESS */
     let startingLine = 0;
 
@@ -89,20 +130,24 @@ async function sheetBuilding(workbook:Workbook, title:string | undefined, campai
     if(situation) worksheet.getCell('A6').value = situation;
     if(title) worksheet.getCell(`${titlePositionning}7`).value = title;
 
-    for(let i=startingLine; i < data.length; i++) {
+    for(let i=0; i < data.length; i++) {
         const line = data[i];
 
         for(let j=0; j < line.length; j++) {
             let finalCellNumber = null;
             const cell = line[j];
-            const cellNumber = `${excelColumns(j+1)}${i+1}`;
+            const cellNumber = `${excelColumns(j+1)}${i+startingLine+1}`;
 
             if(cell.rowSpan || cell.colSpan) {
-                finalCellNumber = afterMerge(data, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i, j);
+                finalCellNumber = afterMerge(data, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i+startingLine, j);
                 worksheet.mergeCells(`${cellNumber}`, `${finalCellNumber}`);
             }
 
-            worksheet.getCell(cellNumber).value = cell.text;
+            let renderedCellValue = renderCell(cell);
+            worksheet.getCell(cellNumber).value = renderedCellValue;
+
+            if(typeof  renderedCellValue === "number" && renderedCellValue % 1 != 0)
+                worksheet.getCell(cellNumber).numFmt = numFmDecimal(renderedCellValue);
 
             worksheet.getCell(cellNumber).font = {
                 name: 'Calibri',
@@ -163,66 +208,11 @@ export default async (workbook:Workbook, sheetData:IPayload, options:IDefaultOpt
         // The data is a single table content definition
         else {
             if(isICell(sheetData.data[0][0])) {
-                /* BUILDING PROCESS */
-                let startingLine = 0;
-
-                let titlePositionning = excelColumns(Math.round((sheetData.data[0].length) / 2));
-                const {protection, defaultOptions = {defaultColWidth: 20}} = options;
-
-                const worksheet = workbook.addWorksheet('Feuille Excel', { properties: defaultOptions});
-
-                if(protection) await worksheet.protect(protection, {});
-
                 let {title, campaign, situation, logo, data} = sheetData;
-
                 let dataCasted = data as ICell[][];
-
-                if(logo) {
-                    startingLine = 8;
-                    const image = workbook.addImage({ base64: logo, extension: 'png' });
-                    worksheet.addImage(image, 'A1:B3');
-                }
-
-                if(campaign) worksheet.getCell('A5').value = campaign;
-                if(situation) worksheet.getCell('A6').value = situation;
-                if(title) worksheet.getCell(`${titlePositionning}7`).value = title;
-
-                for(let i=startingLine; i < dataCasted.length; i++) {
-                    const line = dataCasted[i];
-
-                    for(let j=0; j < line.length; j++) {
-                        let finalCellNumber = null;
-                        const cell = line[j];
-                        const cellNumber = `${excelColumns(j+1)}${i+1}`;
-
-                        if(cell.rowSpan || cell.colSpan) {
-                            finalCellNumber = afterMerge(dataCasted, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i, j);
-                            worksheet.mergeCells(`${cellNumber}`, `${finalCellNumber}`);
-                        }
-
-                        worksheet.getCell(cellNumber).value = cell.text;
-
-                        worksheet.getCell(cellNumber).font = {
-                            name: 'Calibri',
-                            family: 1,
-                            size: 14,
-                        };
-
-                        worksheet.getCell(cellNumber).border = {
-                            top: {style:'thin'},
-                            left: {style:'thin'},
-                            bottom: {style:'thin'},
-                            right: {style:'thin'}
-                        };
-
-                        worksheet.getCell(cellNumber).alignment = {
-                            wrapText: true,
-                            shrinkToFit: false,
-                            vertical: 'middle',
-                            horizontal: 'center'
-                        };
-                    }
-                }
+                sheetBuilding(workbook, title, campaign, situation, logo, dataCasted, options).then(wb => {
+                    finalWorkbook = wb;
+                });
             }
             finalWorkbook = workbook;
         }
