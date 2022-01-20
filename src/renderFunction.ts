@@ -50,7 +50,7 @@ function afterMerge(
 
     if(rowSpan) {
         numberPart = numberPart + (rowSpan - 1);
-        payload[lineIndex + (rowSpan - 1)][columnIndex] = {...payload[lineIndex + (rowSpan - 1)][columnIndex], text: cellText, colSpan: null, rowSpan: null};
+        payload[(rowSpan - 1)][columnIndex] = {...payload[(rowSpan - 1)][columnIndex], text: cellText, colSpan: null, rowSpan: null};
     }
     if(colSpan) {
         stringPart = excelColumns(letterColumnIndex + (colSpan - 1));
@@ -88,8 +88,8 @@ function renderCell(cell:ICell) {
 
     if(!cell.text) return "";
     if(cell.text === "") return cell.text;
-    if(!isNaN(Number(cell.text))) return parseFloat(cell.text);
-    if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join(""));
+    if(!isNaN(Number(cell.text))) return parseFloat(cell.text) || cell.text;
+    if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join("")) || cell.text;
     if(stringTypes.includes(cell.type)) return cell.text;
     else return  cell.text;
 }
@@ -141,7 +141,8 @@ async function sheetBuilding(
             const cellNumber = `${excelColumns(j+1)}${i+startingLine+1}`;
 
             if(cell.rowSpan || cell.colSpan) {
-                finalCellNumber = afterMerge(data, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i+startingLine, j);
+                // finalCellNumber = afterMerge(data, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i+startingLine, j);
+                finalCellNumber = afterMerge(data, cellNumber, j+1, cell.rowSpan, cell.colSpan, cell.text, i, j);
                 worksheet.mergeCells(`${cellNumber}`, `${finalCellNumber}`);
             }
 
