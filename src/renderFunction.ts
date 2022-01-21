@@ -50,7 +50,7 @@ function afterMerge(
 
     if(rowSpan) {
         numberPart = numberPart + (rowSpan - 1);
-        payload[(rowSpan - 1)][columnIndex] = {...payload[(rowSpan - 1)][columnIndex], text: cellText, colSpan: null, rowSpan: null};
+        payload[lineIndex + (rowSpan - 1)][columnIndex] = {...payload[lineIndex][columnIndex], text: cellText, colSpan: null, rowSpan: null};
     }
     if(colSpan) {
         stringPart = excelColumns(letterColumnIndex + (colSpan - 1));
