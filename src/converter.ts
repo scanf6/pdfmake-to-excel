@@ -33,7 +33,7 @@ export class ExcelConverter {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 		const data = await renderer.xlsx.writeBuffer();
-		let myBlob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+		let myBlob = new Blob(data, {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 		return toStream(myBlob);
 		//return myBlob;
 		//return new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
