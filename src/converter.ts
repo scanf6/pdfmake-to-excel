@@ -5,7 +5,6 @@ import { IPayload } from './interfaces/IPayload.interface';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 import renderFunction from "./renderFunction";
 const Blob = require('node-blob');
-const toStream = require('blob-to-stream');
 const {Readable} = require('stream');
 
 export class ExcelConverter {
@@ -19,7 +18,10 @@ export class ExcelConverter {
 
 	) {}
 
-	async downloadExcel() {
+	/**
+	 * Front-End purposes: Create the Excel File and starts the download
+	 */
+	async downloadExcel():Promise<void> {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 
@@ -30,16 +32,14 @@ export class ExcelConverter {
 		});
 	}
 
-	async getBlob() {
+	/**
+	 * Back-End purposes: Create a readable stream of data that you can pipe to a response request
+	 */
+	async getStream(response:any) {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 		const data = await renderer.xlsx.writeBuffer();
-
-		// Returning the data as a Blob and to a stream
 		const stream = Readable.from(data);
-		return stream;
-		//let myBlob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-		//return myBlob;
-		//return new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+		stream.pipe(response);
 	}
 }
