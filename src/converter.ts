@@ -26,4 +26,15 @@ export class ExcelConverter {
 			saveAs(blob, this.filename + '.xlsx');
 		});
 	}
+
+	async getBlob() {
+		let blobData = null;
+		const workbook = new ExcelJS.Workbook();
+		let renderer = await renderFunction(workbook, this.payload, this.options);
+
+		renderer.xlsx.writeBuffer().then((data:Buffer) => {
+			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			blobData = blob;
+		});
+	}
 }
