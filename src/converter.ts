@@ -28,15 +28,10 @@ export class ExcelConverter {
 	}
 
 	async getBlob() {
-		let blobData = null;
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
-
-		renderer.xlsx.writeBuffer().then((data:Buffer) => {
-			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-			blobData = blob;
-		});
-
-		return blobData;
+		const data = await renderer.xlsx.writeBuffer();
+		console.log("@@@DATA", data);
+		return data;
 	}
 }
