@@ -87,13 +87,24 @@ const exporter = new ExcelConverter(
 
 
 ## Streaming
-In case you want to export your Excel file server-side, pdfmake-to-excel provides the getStream() method which takes in your response as the first argument. The excel file is created to pipe to your response
+In case you want to export your Excel file server-side, pdfmake-to-excel provides the getStream() method which takes in an optionnal argument which is your response as the first argument. 
+- When the response argument is provided, the excel file is created and directly piped to your response.
+- When the response argument is not provided, you'll get the stream itself. Up to you to pipe it wherever you want
 
 ## Example Using NestJS
 ```javascript
 @Get('/export-excel-file')
 async exportReportExcel(@Res() response:Response):Promise<any> {
   const exporter = new ExcelConverter('FileTest', contentDefinition);
-  await exporter.getStream(response);
+  
+  // Automatic pipe to response
+  await exporter.getStream(response); 
+  
+  
+  // Get the stream
+  const stream = await exporter.getStream();
+  
+  // Then pipe it if you want
+  stream.pipe(response);
 }
 ```
