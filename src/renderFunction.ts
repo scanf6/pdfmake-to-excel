@@ -173,7 +173,7 @@ async function sheetBuilding(
             };
         }
     }
-    worksheet.commit();
+
     return workbook;
 }
 
