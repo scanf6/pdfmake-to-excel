@@ -8,7 +8,7 @@ export interface IPayload {
 
 export interface ICell {
 	text:string;
-	type:string;
+	type?:string;
 	rowSpan?:number | null | undefined;
 	colSpan?:number | null | undefined;
 	border?: number[]
