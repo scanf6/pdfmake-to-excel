@@ -88,6 +88,7 @@ function renderCell(cell:ICell) {
 
     if(!cell.text) return "";
     if(cell.text === "") return cell.text;
+    if(!cell.type) return cell.text;
     if(!isNaN(Number(cell.text))) return parseFloat(cell.text) ?? cell.text;
     if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join("")) ?? cell.text;
     if(stringTypes.includes(cell.type)) return cell.text;
