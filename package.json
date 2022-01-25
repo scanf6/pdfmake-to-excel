@@ -31,8 +31,7 @@
   "homepage": "https://github.com/scanf6/pdfmake-to-excel#readme",
   "dependencies": {
     "exceljs": "^4.3.0",
-    "file-saver": "^2.0.5",
-    "stream": "^0.0.2"
+    "file-saver": "^2.0.5"
   },
   "devDependencies": {
     "@types/exceljs": "^1.3.0",

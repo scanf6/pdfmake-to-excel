@@ -5,10 +5,6 @@ import { IPayload } from './interfaces/IPayload.interface';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 import renderFunction from "./renderFunction";
 
-// Testing streams with ExcelJS
-const Stream = require('stream');
-
-
 export class ExcelConverter {
 	constructor(
 		private filename:String,
