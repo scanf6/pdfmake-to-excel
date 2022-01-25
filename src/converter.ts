@@ -19,18 +19,11 @@ export class ExcelConverter {
 	async downloadExcel() {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
+
+
 		renderer.xlsx.writeBuffer().then((data:Buffer) => {
 			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 			saveAs(blob, this.filename + '.xlsx');
-		});
-	}
-
-	async getExcelBlob() {
-		const workbook = new ExcelJS.Workbook();
-		let renderer = await renderFunction(workbook, this.payload, this.options);
-		renderer.xlsx.writeBuffer().then((data:Buffer) => {
-			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-			return blob;
 		});
 	}
 }

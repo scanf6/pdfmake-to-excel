@@ -7,20 +7,20 @@ import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
  * @param {Number} colNumber The number of the lettre. Ex: 1 -> A, 2 -> B
  * @returns {String} The letter from the received number. Ex: 1 -> A, 2 -> B
  */
- function excelColumns(colNumber:number):string {
-	const start = 65;
-	const end = 90;
+function excelColumns(colNumber:number):string {
+    const start = 65;
+    const end = 90;
 
-	if(colNumber <= 0) return '';
+    if(colNumber <= 0) return '';
 
-	let charCode = (start + colNumber) - 1;
+    let charCode = (start + colNumber) - 1;
 
-	if(charCode > end) {
-		let subCode = (start + (charCode - end)) - 1;
-		return `A${String.fromCharCode(subCode)}`
-	}
+    if(charCode > end) {
+        let subCode = (start + (charCode - end)) - 1;
+        return `A${String.fromCharCode(subCode)}`
+    }
 
-	return String.fromCharCode(charCode);
+    return String.fromCharCode(charCode);
 }
 
 /**
@@ -36,14 +36,14 @@ import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
  * @returns {String} The final cell number for the merge
  */
 function afterMerge(
-	payload: ICell[][],
-	cellNumber:string,
-	letterColumnIndex:number,
-	rowSpan:number | null | undefined=null,
-	colSpan:number | null | undefined=null,
-	cellText:string,
-	lineIndex:number,
-	columnIndex:number
+    payload: ICell[][],
+    cellNumber:string,
+    letterColumnIndex:number,
+    rowSpan:number | null | undefined=null,
+    colSpan:number | null | undefined=null,
+    cellText:string,
+    lineIndex:number,
+    columnIndex:number
 ) {
     let numberPart = Number(cellNumber.split('').filter(char => !Number.isNaN(Number(char))).join(''));
     let stringPart = cellNumber.split('').filter(char => Number.isNaN(Number(char))).join('');
