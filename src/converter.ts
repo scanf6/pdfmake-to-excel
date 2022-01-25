@@ -5,6 +5,7 @@ import { IPayload } from './interfaces/IPayload.interface';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 import renderFunction from "./renderFunction";
 const Blob = require('node-blob');
+const toStream = require('blob-to-stream')
 
 export class ExcelConverter {
 	constructor(
@@ -33,8 +34,8 @@ export class ExcelConverter {
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 		const data = await renderer.xlsx.writeBuffer();
 		let myBlob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-		console.log("Returned BLOB",myBlob);
-		return myBlob;
+		return toStream(myBlob);
+		//return myBlob;
 		//return new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 	}
 }
