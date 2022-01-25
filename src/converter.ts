@@ -30,6 +30,7 @@ export class ExcelConverter {
 	}
 
 	async streamExcel() {
+		console.log('Streaming')
 		const stream = new Stream.PassThrough();
 		const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ stream })
 		await renderFunction(workbook, this.payload, this.options);
