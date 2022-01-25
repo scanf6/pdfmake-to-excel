@@ -36,5 +36,7 @@ export class ExcelConverter {
 			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 			blobData = blob;
 		});
+
+		return blobData;
 	}
 }
