@@ -29,11 +29,12 @@ export class ExcelConverter {
 		});
 	}
 
-	async streamExcel() {
-		console.log('Streaming')
-		const stream = new Stream.PassThrough();
-		const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ stream })
-		await renderFunction(workbook, this.payload, this.options);
-		workbook.commit();
+	async getExcelBlob() {
+		const workbook = new ExcelJS.Workbook();
+		let renderer = await renderFunction(workbook, this.payload, this.options);
+		renderer.xlsx.writeBuffer().then((data:Buffer) => {
+			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			return blob;
+		});
 	}
 }
