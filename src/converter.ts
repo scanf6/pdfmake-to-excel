@@ -39,15 +39,15 @@ export class ExcelConverter {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 		console.log("rendered", renderer)
-		const data = await renderer.xlsx.writeBuffer();
-		console.log("data", data)
-		const stream = Readable.from(data);
-		console.log("stream", stream);
 
-		if(response) {
-			stream.pipe(response);
-			return null;
-		}
-		else return stream;
+		renderer.xlsx.writeBuffer().then((data:Buffer) => {
+			console.log("data", data);
+			const stream = Readable.from(data);
+			if(response) {
+				stream.pipe(response);
+				return null;
+			}
+			else return stream;
+		});
 	}
 }
