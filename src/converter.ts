@@ -4,7 +4,6 @@ import * as ExcelJS from 'exceljs';
 import { IPayload } from './interfaces/IPayload.interface';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 import renderFunction from "./renderFunction";
-const Blob = require('node-blob');
 const {Readable} = require('stream');
 
 export class ExcelConverter {
