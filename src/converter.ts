@@ -35,11 +35,14 @@ export class ExcelConverter {
 	 * Back-End purposes: Create a readable stream of data that you can pipe to a response request
 	 */
 	async getStream(response=null) {
+		console.log("response")
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
+		console.log("rendered", renderer)
 		const data = await renderer.xlsx.writeBuffer();
+		console.log("data", data)
 		const stream = Readable.from(data);
-		console.log(stream);
+		console.log("stream", stream);
 
 		if(response) {
 			stream.pipe(response);
