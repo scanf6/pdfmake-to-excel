@@ -4,9 +4,7 @@ import * as ExcelJS from 'exceljs';
 import { IPayload } from './interfaces/IPayload.interface';
 import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 import renderFunction from "./renderFunction";
-//const {Readable} = require('stream');
-const NodeBlob = require('node-blob');
-const toStream = require('blob-to-stream')
+const {Readable} = require('stream');
 
 export class ExcelConverter {
 	constructor(
@@ -25,8 +23,6 @@ export class ExcelConverter {
 	async downloadExcel():Promise<void> {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
-
-
 		renderer.xlsx.writeBuffer().then((data:Buffer) => {
 			let blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 			saveAs(blob, this.filename + '.xlsx');
@@ -40,10 +36,7 @@ export class ExcelConverter {
 		const workbook = new ExcelJS.Workbook();
 		let renderer = await renderFunction(workbook, this.payload, this.options);
 		const data = await renderer.xlsx.writeBuffer();
-		let blob = new NodeBlob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
-		console.log(blob)
-		// const stream = Readable.from(blob);
-		const stream = toStream(blob);
+		const stream = Readable.from(data);
 		if(response) {
 			stream.pipe(response);
 			return null;
