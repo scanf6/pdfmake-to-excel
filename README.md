@@ -35,7 +35,7 @@ Here is what this library brings:
 - Front-end excel download
 - Server-side excel download by streaming
 
-##❯ Installation
+## ❯ Installation
 
 Install pdfmake-to-excel with npm
 
@@ -43,9 +43,7 @@ Install pdfmake-to-excel with npm
   npm install pdfmake-to-excel
 ```
 
-##❯ Usage/Examples
-
-
+## ❯ Usage/Examples
 
 Import the ExcelConverter class from pdfmake-to-excel, instanciate it with the name of your excel file and your pdfmake
 table content definition object, then call the downloadExcel() method.
@@ -74,7 +72,7 @@ function downloadFile() {
 }
 ```
 
-##❯ Content Definition Object Format
+## ❯ Content Definition Object Format
 
 Here is the documentation to build pdfmake payloads: [PDFMake Playground](http://pdfmake.org/playground.html).
 Here is how you should format your table content definition object
@@ -112,7 +110,7 @@ Here is how you should format your table content definition object
 }
 ```
 
-##❯ Multiple Sheets
+## ❯ Multiple Sheets
 
 To generate an Excel file with multiple sheets and a table on each sheet, all you have to do is to provide the
 ExcelConverter Class with a content definition object where the data attribute is an array of sheets, each sheets being
@@ -132,7 +130,7 @@ const exporter = new ExcelConverter(
 );
 ```
 
-##❯ Streaming
+## ❯ Streaming
 
 In case you want to export your Excel file server-side, pdfmake-to-excel provides the getStream() method which takes in
 an optionnal argument which is your response as the first argument.
@@ -140,7 +138,7 @@ an optionnal argument which is your response as the first argument.
 - When the response argument is provided, the excel file is created and directly piped to your response.
 - When the response argument is not provided, you'll get the stream itself. Up to you to pipe it wherever you want
 
-##❯ Example Using NestJS
+## ❯ Example Using NestJS
 
 ```javascript
 @Get('/export-excel-file')
