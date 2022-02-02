@@ -7,7 +7,7 @@ export interface IPayload {
 }
 
 export interface ICell {
-	text:string;
+	text:string | number;
 	type?:string;
 	rowSpan?:number | null | undefined;
 	colSpan?:number | null | undefined;

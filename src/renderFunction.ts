@@ -41,7 +41,7 @@ function afterMerge(
     letterColumnIndex:number,
     rowSpan:number | null | undefined=null,
     colSpan:number | null | undefined=null,
-    cellText:string,
+    cellText:string | number,
     lineIndex:number,
     columnIndex:number
 ) {
@@ -86,13 +86,18 @@ function renderCell(cell:ICell) {
 
     let stringTypes = ['varchar'];
 
-    if(!cell.text) return "";
-    if(cell.text === "") return cell.text;
-    if(!cell.type) return cell.text;
-    if(!isNaN(Number(cell.text))) return parseFloat(cell.text) ?? cell.text;
-    if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join("")) ?? cell.text;
-    if(stringTypes.includes(cell.type)) return cell.text;
-    else return  cell.text;
+    try {
+        if(!cell.text) return "";
+        if(cell.text === "") return cell.text;
+        if(!cell.type) return cell.text;
+        if(typeof cell.text === "number") return cell.text;
+        if(!isNaN(Number(cell.text))) return parseFloat(cell.text) ?? cell.text;
+        if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join("")) ?? cell.text;
+        if(stringTypes.includes(cell.type)) return cell.text;
+        else return  cell.text;
+    } catch (e) {
+        return "";
+    }
 }
 
 function isICell(object:any): object is ICell {
