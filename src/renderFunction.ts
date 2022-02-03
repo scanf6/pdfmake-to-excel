@@ -61,12 +61,16 @@ function afterMerge(
 }
 
 function numFmDecimal(numberValue:number):string {
-    let formatStr = "0.";
-    let num = numberValue.toString().split('.')[1].length;
-    for(let i=0; i < num; i++) {
-        formatStr += "0";
+    try {
+        let formatStr = "0.";
+        let num = numberValue.toString().split('.')[1].length;
+        for(let i=0; i < num; i++) {
+            formatStr += "0";
+        }
+        return formatStr;
+    } catch (e) {
+        return "";
     }
-    return formatStr;
 }
 
 /**
@@ -81,10 +85,12 @@ function renderCell(cell:ICell) {
         'numeric',
         'int4',
         'int8',
-        'int'
+        'int',
+        'number'
     ];
 
     let stringTypes = ['varchar'];
+    let dateTypes = ['date'];
 
     try {
         if(!cell.text) return "";
@@ -94,6 +100,7 @@ function renderCell(cell:ICell) {
         if(!isNaN(Number(cell.text))) return parseFloat(cell.text) ?? cell.text;
         if(numTypes.includes(cell.type)) return parseFloat(cell?.text?.split(" ").join("")) ?? cell.text;
         if(stringTypes.includes(cell.type)) return cell.text;
+        if(dateTypes.includes(cell.type)) return cell.text?.toString();
         else return  cell.text;
     } catch (e) {
         return "";
