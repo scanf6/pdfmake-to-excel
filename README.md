@@ -82,36 +82,30 @@ function downloadFile() {
 Here is the documentation to build pdfmake payloads: [PDFMake Playground](http://pdfmake.org/playground.html). Here is
 how you should format your table content definition object
 
-```javascript
+```json
 {
-    "title"
-:
-    "Title displayed on your Excel file", //OPTIONAL
-        "logo"
-:
-    "base64 of your image here" //OPTIONAL
-    "data"
-:
-    [
-        [ // LINE 01
-            {
-                "text": "Cell 01", // CELL 01 spanned accross 2 rows
-                "rowSpan": 2
-            },
-            {
-                "text": "Cell 02", // CELL 02 Spanned accross 2 cells
-                "colSpan": 2
-            },
-            {
-                "text": ""
-            },
-        ],
-        [ // Empty line from the first line rowSpan
-            {
-                "text": "" // Empty cell from the first line rowSpan
-            }
-        ]
+  "title": "Title displayed on your Excel file", //OPTIONAL
+  "logo": "base64 of your image here" //OPTIONAL
+  "data": [
+    [ // LINE 01
+      {
+        "text": "Cell 01",  // CELL 01 spanned accross 2 rows
+        "rowSpan": 2
+      },
+      {
+        "text": "Cell 02", // CELL 02 Spanned accross 2 cells
+        "colSpan": 2
+      },
+      {
+        "text": ""
+      }
+    ],
+    [ // Empty line from the first line rowSpan
+      {
+        "text": "" // Empty cell from the first line rowSpan
+      }
     ]
+  ]
 }
 ```
 
@@ -147,11 +141,7 @@ an optionnal argument which is your response as the first argument.
 
 ```javascript
 @Get('/export-excel-file')
-async
-exportReportExcel(@Res()
-response:Response
-):
-Promise < any > {
+async exportReportExcel(@Res() response:Response):Promise < any > {
     const exporter = new ExcelConverter('FileTest', contentDefinition);
 
     // Automatic pipe to response
@@ -164,4 +154,28 @@ Promise < any > {
     // Then pipe it if you want
     stream.pipe(response);
 }
+```
+
+## ❯ Example Using AdonisJS
+
+```javascript
+const ExportService = use('App/Services/ExportService');
+
+const {ExcelConverter} = require('pdfmake-to-excel')
+
+class ExportController{
+  async exportAction({request, response}){
+
+    const executor = ExportService(request.all());
+    const excelConverter = new ExcelConverter('test-filename.png', await executor.getData());
+
+    response.implicitEnd = false;
+    response.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response.header('Content-Transfer-Encoding', 'binary');
+    response.header('Content-Disposition', `attachment; filename="fichier.xlsx"`)
+
+    excelConverter.getStream().pipe(response.response);
+  }
+}
+module.exports = ExportController;
 ```
