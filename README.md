@@ -12,6 +12,10 @@
   <a href="https://github.com/scanf6/pdfmake-to-excel/">
       <img src="https://img.shields.io/badge/GitHub-100000?&logo=github&logoColor=white" alt="NPM package" />
   </a>
+
+  <a href="https://www.buymeacoffee.com/scanf6">
+      <img src="https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee" />
+  </a>
 </p>
 
 <p align="center">
@@ -21,15 +25,16 @@
 
 # Main Purpose
 
-The purpose of this package was to easily generate an Excel file from the [Pdfmake library](http://pdfmake.org/#/). Therefore, by providing
-the payload used to generate PDFs using pdfmake, you should be able to get an Excel file, without malformed cells or
-incorrectly structured cols and rows.
+The purpose of this package was to easily generate an Excel file from the [Pdfmake library](http://pdfmake.org/#/).
+Therefore, by providing the payload used to generate PDFs using pdfmake, you should be able to get an Excel file,
+without malformed cells or incorrectly structured cols and rows.
 
 Here is the documentation to build pdfmake payloads: [PDFMake Playground](http://pdfmake.org/playground.html)
 
 **This library don't require pdfmake.**
 
 Here is what this library brings:
+
 - Merge rows and cols
 - Sheet protection by password
 - Front-end excel download
@@ -74,8 +79,8 @@ function downloadFile() {
 
 ## ❯ Content Definition Object Format
 
-Here is the documentation to build pdfmake payloads: [PDFMake Playground](http://pdfmake.org/playground.html).
-Here is how you should format your table content definition object
+Here is the documentation to build pdfmake payloads: [PDFMake Playground](http://pdfmake.org/playground.html). Here is
+how you should format your table content definition object
 
 ```javascript
 {
