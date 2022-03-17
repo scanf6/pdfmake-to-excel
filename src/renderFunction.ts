@@ -4,24 +4,22 @@ import { IDefaultOptions } from './interfaces/IDefaultOptions.interface';
 
 /**
  * Function that take a number and returns the according character
- * @param {Number} colNumber The number of the lettre. Ex: 1 -> A, 2 -> B
+ * @param {Number} n The number of the lettre. Ex: 1 -> A, 2 -> B
  * @returns {String} The letter from the received number. Ex: 1 -> A, 2 -> B
  */
-function excelColumns(colNumber:number):string {
-    const start = 65;
-    const end = 90;
-
-    if(colNumber <= 0) return '';
-
-    let charCode = (start + colNumber) - 1;
-
-    if(charCode > end) {
-        let subCode = (start + (charCode - end)) - 1;
-        return `A${String.fromCharCode(subCode)}`
+ function excelColumns(n:number):string {
+    n = n - 1;
+    var ordA = 'a'.charCodeAt(0);
+    var ordZ = 'z'.charCodeAt(0);
+    var len = ordZ - ordA + 1;
+  
+    var s = "";
+    while(n >= 0) {
+        s = String.fromCharCode(n % len + ordA) + s;
+        n = Math.floor(n / len) - 1;
     }
-
-    return String.fromCharCode(charCode);
-}
+    return s.toUpperCase();
+  }
 
 /**
  * This function return the final cell number after the row and col spans are applied
