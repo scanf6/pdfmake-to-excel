@@ -1,6 +1,6 @@
 {
   "name": "pdfmake-to-excel",
-  "version": "1.1.55",
+  "version": "1.1.56",
   "description": "A package to convert your pdfmake content definition to an excel file",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
