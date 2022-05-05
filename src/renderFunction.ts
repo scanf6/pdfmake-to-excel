@@ -162,6 +162,11 @@ async function sheetBuilding(
 
             if(typeof  renderedCellValue === "number" && renderedCellValue % 1 != 0)
                 worksheet.getCell(cellNumber).numFmt = numFmDecimal(renderedCellValue);
+            
+            // Checking if the cell has some formula
+            if(cell.formulaOperator && cell.firstFormulaMember && cell.lastFormulaMember) {
+                worksheet.getCell(cellNumber).value = { formula: `${excelColumns(j+1+cell.firstFormulaMember)}${i+startingLine+1}-${excelColumns(j+1+cell.lastFormulaMember)}${i+startingLine+1}`, error: '#REF!'};
+            }
 
             worksheet.getCell(cellNumber).font = {
                 name: 'Calibri',

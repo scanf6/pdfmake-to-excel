@@ -9,6 +9,9 @@ export interface IPayload {
 export interface ICell {
 	text:string | number;
 	type?:string;
+	formulaOperator?: 'plus' | 'minus',
+	firstFormulaMember?: number,
+	lastFormulaMember?: number,
 	rowSpan?:number | null | undefined;
 	colSpan?:number | null | undefined;
 	border?: number[]
